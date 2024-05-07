@@ -2,6 +2,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:login_anonymus/global/thoast.dart';
 import 'package:login_anonymus/user-auth/firebase_auth_implementation/firebase_auth_services.dart';
 import 'package:login_anonymus/user-auth/presentation/page/loginpage.dart';
 import 'package:login_anonymus/user-auth/presentation/widget/formcontainer.dart';
@@ -86,7 +87,10 @@ class _SignUPState extends State<SignUP> {
               ),
               
               GestureDetector(
-                onTap: _signUp,
+                onTap: (){
+                    _signUp();
+                    nottifMelayang(message: "User berhasil dibuat");
+                },
                 child: Container(
                   width: double.infinity,
                   height: 40,

@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:login_anonymus/global/thoast.dart';
 import 'package:login_anonymus/user-auth/presentation/page/loginpage.dart';
 
 class HomePage extends StatelessWidget {
@@ -18,8 +19,8 @@ class HomePage extends StatelessWidget {
             const SizedBox(height: 20,),
             ElevatedButton(onPressed: (){
               FirebaseAuth.instance.signOut();
-              print("LogOut Suksess");
-              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>LoginPage()), (route) => false);
+              nottifMelayang(message: "Log Out suksess");
+              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>const LoginPage()), (route) => false);
             }, child: const Text("LogOut"))
           ],
         ),
