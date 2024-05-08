@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:login_anonymus/global/thoast.dart';
 import 'package:login_anonymus/user-auth/firebase_auth_implementation/firebase_auth_services.dart';
 import 'package:login_anonymus/user-auth/presentation/page/homepage.dart';
 import 'package:login_anonymus/user-auth/presentation/page/singUp.dart';
@@ -18,6 +20,7 @@ class _LoginPageState extends State<LoginPage> {
   bool _isSignIn = false;
 
   final FirebasAuthServices _auth = FirebasAuthServices();
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
@@ -82,7 +85,7 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(height: 10,),
 
               GestureDetector(
-                onTap: _signIn,
+                onTap: signInWithGoogle,
                 child: Container(
                   width: double.infinity,
                   height: 40,
@@ -93,6 +96,7 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(FontAwesomeIcons.google),
+                      SizedBox(width: 15,),
                       Center(child: CustonmText("Sign in with Google"))
                     ],
                   ),
@@ -147,14 +151,48 @@ class _LoginPageState extends State<LoginPage> {
     });
 
     if (user != null) {
+      // ignore: avoid_print
       print("User dikenali");
       // ignore: use_build_context_synchronously
       Navigator.pushAndRemoveUntil(
+          // ignore: use_build_context_synchronously
           context,
-          MaterialPageRoute(builder: (context) => HomePage()),
+          MaterialPageRoute(builder: (context) => const HomePage()),
           (route) => false);
     } else {
+      // ignore: avoid_print
       print("Password atau email error");
     }
   }
+
+  signInWithGoogle() async {
+
+  final GoogleSignIn googlesignin = GoogleSignIn();
+
+  try{
+    final GoogleSignInAccount? googleSignInAccount = await googlesignin.signIn();
+
+    if (googleSignInAccount != null){
+      final GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount.authentication;
+
+      final AuthCredential credential  = GoogleAuthProvider.credential(
+        idToken: googleSignInAuthentication.idToken,
+        accessToken: googleSignInAuthentication.accessToken,
+      );
+
+      await _firebaseAuth.signInWithCredential(credential);
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const HomePage()), (route) => false);
+
+    }
+
+
+  }catch(e){
+    nottifMelayang(message: "Terjadi kesalahan $e");
+  }
+
+
 }
+
+
+}
+
