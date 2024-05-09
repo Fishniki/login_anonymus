@@ -1,7 +1,6 @@
 // ignore_for_file: file_names
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:login_anonymus/global/thoast.dart';
 import 'package:login_anonymus/user-auth/firebase_auth_implementation/firebase_auth_services.dart';
 import 'package:login_anonymus/user-auth/presentation/page/loginpage.dart';
@@ -21,9 +20,9 @@ class _SignUPState extends State<SignUP> {
 
   final FirebasAuthServices _auth =FirebasAuthServices();
 
-  TextEditingController _usernameController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   void dispose() {
@@ -125,11 +124,11 @@ class _SignUPState extends State<SignUP> {
     });
 
     if (user != null) {
-      print("User berhasil dibuat");
+      nottifMelayang(message: "User berhasil dibuat");
       // ignore: use_build_context_synchronously
-      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>LoginPage()), (route) => false);
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>const LoginPage()), (route) => false);
     }else{
-      print("Terjadi kesalahan");
+      nottifMelayang(message: "Terjadi Kesalahan");
     }
   }
 }

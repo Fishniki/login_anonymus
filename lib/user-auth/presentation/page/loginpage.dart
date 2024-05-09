@@ -22,8 +22,8 @@ class _LoginPageState extends State<LoginPage> {
   final FirebasAuthServices _auth = FirebasAuthServices();
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   void dispose() {
@@ -82,7 +82,7 @@ class _LoginPageState extends State<LoginPage> {
                             : const CustonmText("Login"))),
               ),
               
-              SizedBox(height: 10,),
+              const SizedBox(height: 10,),
 
               GestureDetector(
                 onTap: signInWithGoogle,
@@ -95,7 +95,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(FontAwesomeIcons.google),
+                      Icon(FontAwesomeIcons.google, color:  Colors.white,),
                       SizedBox(width: 15,),
                       Center(child: CustonmText("Sign in with Google"))
                     ],
@@ -181,6 +181,7 @@ class _LoginPageState extends State<LoginPage> {
       );
 
       await _firebaseAuth.signInWithCredential(credential);
+      // ignore: use_build_context_synchronously
       Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const HomePage()), (route) => false);
 
     }
