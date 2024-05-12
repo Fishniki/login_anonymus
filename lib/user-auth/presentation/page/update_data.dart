@@ -1,17 +1,23 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:login_anonymus/global/thoast.dart';
 import 'package:login_anonymus/user-auth/presentation/page/Crud/created.dart';
+import 'package:login_anonymus/user-auth/presentation/page/Crud/update.dart';
 import 'package:login_anonymus/user-auth/presentation/page/homepage.dart';
 import 'package:login_anonymus/user-auth/presentation/widget/formcontainer.dart';
 
-class CreateData extends StatefulWidget {
-  const CreateData({super.key});
+class UpdateDataNew extends StatefulWidget {
+  const UpdateDataNew(this.id,{super.key});
+
+  final String id;
 
   @override
-  State<CreateData> createState() => _CreateDataState();
+  State<UpdateDataNew> createState() => _UpdateDataNewState();
 }
 
-class _CreateDataState extends State<CreateData> {
+class _UpdateDataNewState extends State<UpdateDataNew> {
+
+  // final userId = FirebaseFirestore.instance.collection("id");
 
   TextEditingController usernameController = TextEditingController();
   TextEditingController countryController = TextEditingController();
@@ -121,16 +127,12 @@ class _CreateDataState extends State<CreateData> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      createdData(UserModel(
+                      updateData(widget.id,UserModel(
                         username: usernameController.text,
                         country: countryController.text,
                         age: int.parse(ageController.text),
                       ));
-                      usernameController.clear();
-                      countryController.clear();
-                      ageController.clear();
-                      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> const HomePage()), (route) => false);
-                      nottifMelayang(message: "Upload data suksess");
+                      // Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> HomePage()), (route) => false);
                     },
                     style: ElevatedButton.styleFrom(
                         // foregroundColor: Colors.blue,
@@ -138,7 +140,7 @@ class _CreateDataState extends State<CreateData> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(0))),
                     child: const Text(
-                      "Simpan",
+                      "Update",
                       style: TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.white),
                     ),
