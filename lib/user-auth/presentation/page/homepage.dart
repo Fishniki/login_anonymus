@@ -4,8 +4,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:login_anonymus/global/thoast.dart';
+import 'package:login_anonymus/user-auth/firebase_auth_implementation/firebase_auth_services.dart';
 import 'package:login_anonymus/user-auth/presentation/page/Crud/created.dart';
+import 'package:login_anonymus/user-auth/presentation/page/Crud/delete.dart';
 import 'package:login_anonymus/user-auth/presentation/page/Crud/update.dart';
 import 'package:login_anonymus/user-auth/presentation/page/created_data.dart';
 import 'package:login_anonymus/user-auth/presentation/page/loginpage.dart';
@@ -20,6 +23,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  static final _auth = FirebaseAuth.instance;
+
   TextEditingController usernameController = TextEditingController();
   TextEditingController countryController = TextEditingController();
   TextEditingController ageController = TextEditingController();
@@ -281,7 +286,10 @@ class _HomePageState extends State<HomePage> {
                                           },
                                           icon: const Icon(Icons.edit)),
                                       IconButton(
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            deleteData(usersf.id.toString());
+                                            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>HomePage()), (route) => false);
+                                          },
                                           icon: const Icon(Icons.delete))
                                     ],
                                   )
@@ -301,7 +309,8 @@ class _HomePageState extends State<HomePage> {
           ),
           ElevatedButton(
               onPressed: () {
-                FirebaseAuth.instance.signOut();
+                // FirebaseAuth.instance.signOut();
+                logOut();
                 nottifMelayang(message: "Log Out suksess");
                 Navigator.pushAndRemoveUntil(
                     context,
@@ -312,6 +321,10 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
     );
+  }
+  static Future<void> logOut()async{
+    await _auth.signOut();
+    await GoogleSignIn().signOut();
   }
 }
 
@@ -332,3 +345,4 @@ Future<List<UserModel>> readData() async {
 Future UpdateDataNew(String id, Map<String, dynamic> updateInfo)async{
   return await FirebaseFirestore.instance.collection("users").doc(id).update(updateInfo);
 }
+
